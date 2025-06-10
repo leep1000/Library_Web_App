@@ -22,6 +22,9 @@ def create_app():
         from . import models  
         # Create the database tables if they do not exist
         db.create_all()
+        # populate the database with 10 records
+        from .populate_db import populate_database
+        populate_database()
         
     from . import routes  
 
