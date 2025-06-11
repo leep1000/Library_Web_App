@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Library Home Page{% endblock %} {%
+block header %}Home Page{% endblock %} {% block content %}
+<section>
+  <h2>Welcome to Fujitsu's Library Web App</h2>
+  <p>
+    This web app will allow you to add, view, edit and delete books, as well as
+    reviews for those books.
+  </p>
+  <p>To get started, please log in or register if you don't have an account.</p>
+  <p>Alternatively, use one of the example logins below to explore the app:</p>
+  <table>
+    <tr>
+      <th>Role</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Can delete records?</th>
+    </tr>
+    <tr>
+      <td>Admin</td>
+      <td>adminuser</td>
+      <td>adminpassword</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Regular User</td>
+      <td>regularuser5</td>
+      <td>regularpassword</td>
+      <td>No</td>
+    </tr>
+  </table>
+</section>
+{% endblock %}

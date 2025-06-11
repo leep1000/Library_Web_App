@@ -26,6 +26,9 @@ def create_app():
         from .populate_db import populate_database
         populate_database()
         
-    #from . import routes  
+    # Import the routes blueprint
+    from .routes import routes_bp
+    # Register the blueprint with the Flask app
+    app.register_blueprint(routes_bp)
 
     return app
