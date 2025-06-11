@@ -26,6 +26,6 @@ def create_app():
         from .populate_db import populate_database
         populate_database()
         
-    from . import routes  
+    #from . import routes  
 
     return app
