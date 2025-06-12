@@ -89,3 +89,103 @@ tr:hover {
 td {
   color: #333;
 }
+form {
+  margin: 2em auto;
+  padding: 1.2em 2em;
+  background: #fafafa;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px #ddd;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #377ba8;
+  margin-bottom: 0.3em;
+  margin-top: 1em;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.8em;
+  font-size: 1em;
+  background: #f5fafd;
+  box-sizing: border-box;
+}
+
+button,
+input[type="submit"] {
+  background: #377ba8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.7em 1.4em;
+  font-size: 1em;
+  font-family: "Georgia", serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1em;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background: #22567a;
+}
+button:disabled,
+input[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+footer {
+  font-size: 0.8em;
+  color: #777;
+  margin-top: 1em;
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+dialog {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px #3333;
+  min-width: 300px;
+  padding: 2em 2em 1.5em 2em;
+  background: #fff;
+  position: relative;
+  font-size: 1em;
+  font-family: sans-serif;
+  outline: none;
+}
+
+dialog .close {
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  font-size: 1.5em;
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+}
+.btn-danger {
+  background: #a00;
+  color: #fff;
+  border: none;
+  padding: 0.7em 1.4em;
+  border-radius: 4px;
+  margin-right: 1em;
+  cursor: pointer;
+}
+.btn-danger:hover {
+  background: #d00;
+}

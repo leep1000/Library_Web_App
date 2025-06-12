@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}Books{% endblock %} {% block content
+%} {% if books %}
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Published Year</th>
+      <th>ISBN</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.publication_year }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>
+        <button
+          type="button"
+          onclick="openEditDialog('{{ book.id }}', '{{ book.title|escape }}')"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          onclick="openDialog('{{ book.id }}', '{{ book.title|escape }}')"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No books found.</p>
+{% endif %}
+
+<dialog id="deleteDialog">
+  <form method="POST" id="deleteForm">
+    <span class="close" onclick="closeDialog()">&times;</span>
+    <p id="deleteMsg"></p>
+    <button type="submit" class="btn-danger">Confirm Delete</button>
+    <button type="button" onclick="closeDialog()">Cancel</button>
+  </form>
+</dialog>
+
+<dialog id="editDialog">
+  <form method="POST" id="editForm">
+    <span class="close" onclick="closeEditDialog()">&times;</span>
+    <label for="editBookTitle">Title:</label>
+    <input type="text" name="title" id="editBookTitle" required />
+    <button type="submit" class="btn-danger">Save Changes</button>
+    <button type="button" onclick="closeEditDialog()">Cancel</button>
+  </form>
+</dialog>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='modal.js') }}"></script>
+{% endblock %}

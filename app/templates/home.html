@@ -6,27 +6,11 @@ block header %}Home Page{% endblock %} {% block content %}
     This web app will allow you to add, view, edit and delete books, as well as
     reviews for those books.
   </p>
-  <p>To get started, please log in or register if you don't have an account.</p>
+  <p>
+    To get started, please <a href="/login">log in</a> or
+    <a href="/register">register</a> if you don't have an account.
+  </p>
   <p>Alternatively, use one of the example logins below to explore the app:</p>
-  <table>
-    <tr>
-      <th>Role</th>
-      <th>Username</th>
-      <th>Password</th>
-      <th>Can delete records?</th>
-    </tr>
-    <tr>
-      <td>Admin</td>
-      <td>adminuser</td>
-      <td>adminpassword</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Regular User</td>
-      <td>regularuser5</td>
-      <td>regularpassword</td>
-      <td>No</td>
-    </tr>
-  </table>
+  {% include "_user_table.html" %}
 </section>
 {% endblock %}

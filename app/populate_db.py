@@ -15,8 +15,7 @@ def populate_database():
     users = []
     for i in range(1, 11):
         user = User(
-            username=f"admin" if i == 1 else f"regularuser{i}",
-            email=f"user{i}@example.com",
+            username=f"adminuser" if i == 1 else f"regularuser{i}",
             password="adminpassword" if i == 1 else "regularpassword",  
             role="admin" if i == 1 else "regular",
             created_at=datetime.now(timezone.utc)
