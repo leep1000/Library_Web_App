@@ -10,9 +10,12 @@ function closeDialog() {
   document.getElementById("deleteDialog").close();
 }
 
-function openEditDialog(bookId, bookTitle) {
+function openEditDialog(bookId, bookTitle, bookAuthor, bookYear, bookIsbn) {
   let dialog = document.getElementById("editDialog");
   document.getElementById("editBookTitle").value = bookTitle;
+  document.getElementById("editBookAuthor").value = bookAuthor;
+  document.getElementById("editBookYear").value = bookYear;
+  document.getElementById("editBookIsbn").value = bookIsbn;
   document.getElementById("editForm").action = "/books/" + bookId + "/edit";
   dialog.showModal();
 }
