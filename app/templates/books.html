@@ -18,18 +18,21 @@
       <td>{{ book.publication_year }}</td>
       <td>{{ book.isbn }}</td>
       <td>
+        <!-- prettier-ignore-start -->
         <button
           type="button"
-          onclick="openEditDialog('{{ book.id }}', '{{ book.title|escape }}')"
+          onclick='openEditDialog({{ book.id|tojson }}, {{ book.title|tojson }})'
         >
           Edit
         </button>
         <button
+          class="btn-danger"
           type="button"
-          onclick="openDialog('{{ book.id }}', '{{ book.title|escape }}')"
+          onclick='openDialog({{ book.id|tojson }}, {{ book.title|tojson }})'
         >
           Delete
         </button>
+        <!-- prettier-ignore-end -->
       </td>
     </tr>
     {% endfor %}
@@ -52,11 +55,22 @@
   <form method="POST" id="editForm">
     <span class="close" onclick="closeEditDialog()">&times;</span>
     <label for="editBookTitle">Title:</label>
-    <input type="text" name="title" id="editBookTitle" required />
+    <input type="text" name="title" id="editBookTitle" required>
+
+    <label for="editBookAuthor">Author:</label>
+    <input type="text" name="author" id="editBookAuthor" required>
+
+    <label for="editBookYear">Published Year:</label>
+    <input type="number" name="publication_year" id="editBookYear" required min="0">
+
+    <label for="editBookIsbn">ISBN:</label>
+    <input type="text" name="isbn" id="editBookIsbn" required pattern=".{10,}">
+
     <button type="submit" class="btn-danger">Save Changes</button>
     <button type="button" onclick="closeEditDialog()">Cancel</button>
   </form>
 </dialog>
+
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='modal.js') }}"></script>
 {% endblock %}

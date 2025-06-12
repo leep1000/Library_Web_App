@@ -33,11 +33,39 @@ def delete_book(book_id):
 @routes_bp.route("/books/<int:book_id>/edit", methods=["POST"])
 def edit_book(book_id):
     book = Book.query.get_or_404(book_id)
-    new_title = request.form.get("title")
-    if new_title:
-        book.title = new_title
-        db.session.commit()
-        flash(f"Book '{book.title}' updated.", "success")
+    title = request.form.get("title", "").strip()
+    author = request.form.get("author", "").strip()
+    year = request.form.get("publication_year")
+    isbn = request.form.get("isbn", "").strip()
+
+    #validation
+    errors = []
+    if not title:
+        errors.append("Title is required.")
+    if not author:
+        errors.append("Author is required.")
+    try:
+        year = int(year)
+        if year < 1600 or year > 2025:
+            errors.append("Year must be realistic.")
+    except (ValueError, TypeError):
+        errors.append("Year must be a number.")
+    if not isbn or len(isbn) < 10:
+        errors.append("ISBN is required and should be at least 10 characters.")
+
+    # Show errors (via flash, shown after redirect)
+    if errors:
+        for err in errors:
+            flash(err, "danger")
+        return redirect(url_for("routes.list_books"))
+
+    # Update book
+    book.title = title
+    book.author = author
+    book.publication_year = year
+    book.isbn = isbn
+    db.session.commit()
+    flash(f"Book '{book.title}' updated.", "success")
     return redirect(url_for("routes.list_books"))
 
 

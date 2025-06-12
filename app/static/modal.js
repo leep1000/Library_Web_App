@@ -16,3 +16,7 @@ function openEditDialog(bookId, bookTitle) {
   document.getElementById("editForm").action = "/books/" + bookId + "/edit";
   dialog.showModal();
 }
+
+function closeEditDialog() {
+  document.getElementById("editDialog").close();
+}
