@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, CheckConst
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 
-# User model, including fields for username, email, password, created_at and role
+# User model, including fields for username, password, created_at and role
 class User(db.Model):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
@@ -34,6 +34,11 @@ class Book(db.Model):
     #relationships to link books with their reviews and the user who created them
     user = relationship("User", back_populates="books")
     reviews = relationship("BookReview", back_populates="book")
+    
+    # Restraint to ensure publication year is realistic (between 1600 and 2025)
+    __table_args__ = (
+        CheckConstraint('publication_year >= 1600 AND publication_year <= 2025', name='check_publication_year_range'),
+    )
     
     # String representation of the Book model
     def __repr__(self):
