@@ -21,7 +21,7 @@
         <!-- prettier-ignore-start -->
         <button
           type="button"
-          onclick='openEditDialog({{ book.id|tojson }}, {{ book.title|tojson }})'
+          onclick='openEditDialog({{ book.id|tojson }}, {{ book.title|tojson }}, {{ book.author|tojson }}, {{ book.publication_year|tojson }}, {{ book.isbn|tojson }})'
         >
           Edit
         </button>
