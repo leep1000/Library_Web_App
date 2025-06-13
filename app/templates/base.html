@@ -23,8 +23,8 @@
           <a href="{{ url_for('routes.register') }}">Register</a>
         </nav>
       </header>
-      {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
+      {% for message in get_flashed_messages(with_categories=True) %}
+      <div class="flash {{ message[0] }}">{{ message[1] }}</div>
       {% endfor %}
       <main>{% block content %} {% endblock %}</main>
       <footer>&copy; 2025 Lee Palmer</footer>

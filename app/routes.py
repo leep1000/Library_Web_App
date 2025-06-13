@@ -1,3 +1,5 @@
+from .validators import BookForm
+
 # This file holds the routes for the Flask application, including user registration, login, book management, and review submission
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from . import db
@@ -19,7 +21,26 @@ def list_books():
 @routes_bp.route("/books/add", methods=["GET", "POST"])
 def add_book():
     if request.method == "POST":
-        pass
+        form = BookForm(request.form)
+        isbn_conflict = Book.query.filter_by(isbn=form.isbn.data).first()
+        if isbn_conflict:
+            form.isbn.errors.append("A book with this ISBN already exists.")
+
+        if form.validate() and not form.isbn.errors:
+            new_book = Book(
+                title=form.title.data,
+                author=form.author.data,
+                publication_year=form.publication_year.data,
+                isbn=form.isbn.data
+            )
+            db.session.add(new_book)
+            db.session.commit()
+            flash("Book added successfully!", "success")
+            return redirect(url_for("routes.list_books"))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"{field.capitalize()}: {error}", "danger")
     return render_template("add_book.html")
 
 @routes_bp.route("/books/<int:book_id>/delete", methods=["POST"])
@@ -30,42 +51,27 @@ def delete_book(book_id):
     flash(f"Book '{book.title}' has been deleted.", "success")
     return redirect(url_for("routes.list_books"))
 
+from .validators import BookForm
+
 @routes_bp.route("/books/<int:book_id>/edit", methods=["POST"])
 def edit_book(book_id):
     book = Book.query.get_or_404(book_id)
-    title = request.form.get("title", "").strip()
-    author = request.form.get("author", "").strip()
-    year = request.form.get("publication_year")
-    isbn = request.form.get("isbn", "").strip()
+    form = BookForm(request.form)
+    isbn_conflict = Book.query.filter(Book.isbn == form.isbn.data, Book.id != book_id).first()
+    if isbn_conflict:
+        form.isbn.errors.append("A different book already has this ISBN.")
 
-    #validation
-    errors = []
-    if not title:
-        errors.append("Title is required.")
-    if not author:
-        errors.append("Author is required.")
-    try:
-        year = int(year)
-        if year < 1600 or year > 2025:
-            errors.append("Year must be realistic.")
-    except (ValueError, TypeError):
-        errors.append("Year must be a number.")
-    if not isbn or len(isbn) < 10:
-        errors.append("ISBN is required and should be at least 10 characters.")
-
-    # Show errors (via flash, shown after redirect)
-    if errors:
-        for err in errors:
-            flash(err, "danger")
-        return redirect(url_for("routes.list_books"))
-
-    # Update book
-    book.title = title
-    book.author = author
-    book.publication_year = year
-    book.isbn = isbn
-    db.session.commit()
-    flash(f"Book '{book.title}' updated.", "success")
+    if form.validate() and not form.isbn.errors:
+        book.title = form.title.data
+        book.author = form.author.data
+        book.publication_year = form.publication_year.data
+        book.isbn = form.isbn.data
+        db.session.commit()
+        flash("Book updated successfully!", "success")
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field.capitalize()}: {error}", "danger")
     return redirect(url_for("routes.list_books"))
 
 

@@ -23,3 +23,16 @@ function openEditDialog(bookId, bookTitle, bookAuthor, bookYear, bookIsbn) {
 function closeEditDialog() {
   document.getElementById("editDialog").close();
 }
+
+function openAddDialog() {
+  let dialog = document.getElementById("addDialog");
+  document.getElementById("bookTitle").value = "";
+  document.getElementById("bookAuthor").value = "";
+  document.getElementById("bookYear").value = "";
+  document.getElementById("bookIsbn").value = "";
+  dialog.showModal();
+}
+
+function closeAddDialog() {
+  document.getElementById("addDialog").close();
+}
