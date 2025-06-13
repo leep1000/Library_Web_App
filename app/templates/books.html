@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block title %}Books{% endblock %} {% block content
-%} {% if books %}
+%} 
+<button class="add-book" type="button" onclick="openAddDialog()">
+  Add Book
+</button>
+{% if books %}
 <table>
   <thead>
     <tr>
@@ -52,7 +56,7 @@
 </dialog>
 
 <dialog id="editDialog">
-  <form method="POST" id="editForm">
+  <form method="POST" id="editForm" action="/books/edit">
     <span class="close" onclick="closeEditDialog()">&times;</span>
     <label for="editBookTitle">Title:</label>
     <input type="text" name="title" id="editBookTitle" required>
@@ -71,6 +75,25 @@
   </form>
 </dialog>
 
+<dialog id="addDialog">
+  <form method="POST" id="addForm" action="/books/add">
+    <span class="close" onclick="closeAddDialog()">&times;</span>
+    <label for="bookTitle">Title:</label>
+    <input type="text" name="title" id="bookTitle" required>
+
+    <label for="bookAuthor">Author:</label>
+    <input type="text" name="author" id="bookAuthor" required>
+
+    <label for="bookYear">Published Year:</label>
+    <input type="number" name="publication_year" id="bookYear" required min="0">
+
+    <label for="bookIsbn">ISBN:</label>
+    <input type="text" name="isbn" id="bookIsbn" required pattern=".{10,}">
+
+    <button type="submit" class="btn-danger">Add Book</button>
+    <button type="button" onclick="closeAddDialog()">Cancel</button>
+  </form>
+</dialog>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='modal.js') }}"></script>
 {% endblock %}
