@@ -1,10 +1,31 @@
+# This file holds the routes for the Flask application, including user registration, login, book management, and review submission
 from .validators import BookForm
 
-# This file holds the routes for the Flask application, including user registration, login, book management, and review submission
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import current_app as app
+from functools import wraps
 from . import db
 from .models import User, Book, BookReview
-from flask import current_app as app
+
+# decorator to check if user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("You need to be logged in to access this page.", "warning")
+            return redirect(url_for('routes.login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Decorator to check if user is an admin, this is used to ensure that only users with admin privileges can access delete route
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'role' not in session or session['role'] != 'admin':
+            flash("You do not have permission to access this page.", "danger")
+            return redirect(url_for('routes.list_books'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Create a blueprint for the routes
 routes_bp = Blueprint('routes', __name__)
@@ -14,11 +35,13 @@ def home():
     return render_template("home.html")
 
 @routes_bp.route("/books")
+@login_required
 def list_books():
     books = Book.query.all()
     return render_template("books.html", books=books)
 
 @routes_bp.route("/books/add", methods=["GET", "POST"])
+@login_required
 def add_book():
     if request.method == "POST":
         form = BookForm(request.form)
@@ -44,6 +67,8 @@ def add_book():
     return render_template("add_book.html")
 
 @routes_bp.route("/books/<int:book_id>/delete", methods=["POST"])
+@login_required
+@admin_required
 def delete_book(book_id):
     book = Book.query.get_or_404(book_id)
     db.session.delete(book)
@@ -51,9 +76,8 @@ def delete_book(book_id):
     flash(f"Book '{book.title}' has been deleted.", "success")
     return redirect(url_for("routes.list_books"))
 
-from .validators import BookForm
-
 @routes_bp.route("/books/<int:book_id>/edit", methods=["POST"])
+@login_required
 def edit_book(book_id):
     book = Book.query.get_or_404(book_id)
     form = BookForm(request.form)
@@ -83,6 +107,8 @@ def login():
         user = User.query.filter_by(username=username, password=password).first()
         if user:
             session["user_id"] = user.id
+            session["role"] = user.role
+            session["username"] = user.username
             flash("Login successful!", "success")
             return redirect(url_for("routes.list_books"))
         else:
@@ -92,7 +118,9 @@ def login():
 
 @routes_bp.route('/logout')
 def logout():
-    return "<h1>Logout Coming Soon</h1>"
+    session.clear() 
+    flash("You have been logged out.", "success")
+    return redirect(url_for("routes.login"))
 
 @routes_bp.route('/register')
 def register():
