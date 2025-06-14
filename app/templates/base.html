@@ -14,7 +14,7 @@
       <header>
         <h1>{% block header %}Library App{% endblock %}</h1>
         <nav class="metanav">
-          {% if not session.get('logged_in') %}
+          {% if not session.username %}
           <a href="{{ url_for('routes.login') }}">Log in</a>
           {% else %}
           <a href="{{ url_for('routes.logout') }}">Log out</a>

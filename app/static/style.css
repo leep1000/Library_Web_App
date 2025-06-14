@@ -62,7 +62,8 @@ h2 {
 }
 
 .flash.danger,
-.flash.error {
+.flash.error,
+flash.warning {
   background: #f8d7da;
   color: #a71d2a;
   border: 1px solid #f5c6cb;

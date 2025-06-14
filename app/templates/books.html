@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block title %}Books{% endblock %} {% block content
-%} 
+{% extends "base.html" %} 
+{% block title %}Books{% endblock %} 
+{% block content %}
 <button class="add-book" type="button" onclick="openAddDialog()">
   Add Book
 </button>
@@ -29,6 +30,7 @@
         >
           Edit
         </button>
+        {% if session.role == 'admin' %}
         <button
           class="btn-danger"
           type="button"
@@ -36,6 +38,7 @@
         >
           Delete
         </button>
+        {% endif %}
         <!-- prettier-ignore-end -->
       </td>
     </tr>
