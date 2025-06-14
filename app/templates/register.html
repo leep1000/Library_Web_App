@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Register{% endblock %} {% block
+content %}
+<form method="POST">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required />
+  <br />
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required />
+  <br />
+  <fieldset class="radio-group">
+    <legend>Pick your user type:</legend>
+    <label>
+      <input type="radio" name="role" value="regular" checked />
+      Regular (can't delete books)
+    </label>
+    <label>
+      <input type="radio" name="role" value="admin" />
+      Admin (can delete books)
+    </label>
+  </fieldset>
+  <button type="submit">Register</button>
+</form>
+{% endblock %}
