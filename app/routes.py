@@ -54,7 +54,8 @@ def add_book():
                 title=form.title.data,
                 author=form.author.data,
                 publication_year=form.publication_year.data,
-                isbn=form.isbn.data
+                isbn=form.isbn.data,
+                created_by=session["user_id"]
             )
             db.session.add(new_book)
             db.session.commit()
@@ -122,6 +123,36 @@ def logout():
     flash("You have been logged out.", "success")
     return redirect(url_for("routes.login"))
 
-@routes_bp.route('/register')
+@routes_bp.route('/register', methods=["GET", "POST"])
 def register():
-    return "<h1>Register Coming Soon</h1>"
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        role = request.form.get("role", "regular")
+
+        # Validation
+        if not username or not password:
+            flash("Both username and password are required.", "danger")
+            return render_template("register.html")
+        if len(username) > 50:
+            flash("Username must be less than 50 characters.", "danger")
+            return render_template("register.html")
+        if len(password) > 50:
+            flash("Password must be less than 50 characters.", "danger")
+            return render_template("register.html")
+        if User.query.filter_by(username=username).first():
+            flash("Username already exists. Please choose a different username.", "danger")
+            return render_template("register.html")
+
+        # All checks passed and create user
+        new_user = User(
+            username=username,
+            password=password,
+            role=role,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        flash("Registration successful! You can now log in.", "success")
+        return redirect(url_for("routes.login"))
+    
+    return render_template("register.html")

@@ -220,3 +220,23 @@ input[type="submit"]:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
+.radio-group {
+  border: none;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.radio-group legend {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.radio-group label {
+  margin-right: 2em;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 0.3em;
+}
